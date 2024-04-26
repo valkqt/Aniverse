@@ -1,0 +1,78 @@
+﻿@using Capstone.Models.ViewModels.SubModels;
+
+@{
+    int counter = 0;
+}
+
+@model SearchResultsCategories
+<div>
+    @await Component.InvokeAsync("SearchForm")
+
+    @if (Model.Results.Count != 0)
+    {
+        <h2 class="text-center TitleHighlight">Search Results</h2>
+        <div class="SearchResultsContainer">
+            @await Component.InvokeAsync("SearchCard", new {list = Model.Results})
+        </div>
+    }
+
+    @if (Model.Trending.Count != 0)
+    {
+        <h2 class="text-center TitleHighlight">Trending</h2>
+        <div class="SearchResultsContainer">
+            @await Component.InvokeAsync("SearchCard", new { list = Model.Trending })
+        </div>
+    }
+
+    @if (Model.CurrentSeason.Count != 0)
+    {
+        <h2 class="text-center TitleHighlight">Popular this season</h2>
+        <div class="SearchResultsContainer">
+            @await Component.InvokeAsync("SearchCard", new { list = Model.CurrentSeason })
+        </div>
+    }
+
+    @if (Model.NextSeason.Count != 0)
+    {
+        <h2 class="text-center TitleHighlight">Upcoming</h2>
+        <div class="SearchResultsContainer">
+            @await Component.InvokeAsync("SearchCard", new { list = Model.NextSeason })
+        </div>
+    }
+
+    @if (Model.Score.Count != 0)
+    {
+        <h2 class="text-center TitleHighlight">All Time Favourites</h2>
+        <div class="SearchResultsContainer">
+            @await Component.InvokeAsync("SearchCard", new { list = Model.Score })
+        </div>
+    }
+
+    @if (Model.Popular.Count != 0)
+    {
+        <h2 class="text-center TitleHighlight">All Time Popular</h2>
+        <div class="SearchResultsContainer">
+            @await Component.InvokeAsync("SearchCard", new { list = Model.Popular })
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        const cards = document.querySelectorAll(".SearchImgContainer")
+        for (card of cards) {
+
+            card.addEventListener("mouseover", function () {
+                let info = document.getElementById(`r${this.id}`)
+
+                info.classList.toggle("ToggleDisplay")
+            })
+            card.addEventListener("mouseout", function () {
+                let info = document.getElementById(`r${this.id}`)
+
+                info.classList.toggle("ToggleDisplay")
+            })
+        }
+    </script>
+}

@@ -1,0 +1,18 @@
+﻿@model User
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<p>sono register</p>
+
+<form asp-action="RegisterAction" asp-controller="Auth" method="post">
+    <label asp-for="Username">Username:</label>
+    <input asp-for="Username" type="text" />
+    <label asp-for="Email">Email address:</label>
+    <input asp-for="Email" type="email" />
+    <label asp-for="Password">Password:</label>
+    <input asp-for="Password" type="password"/>
+    <button type="submit" value="RegisterAction">Submit</button>
+</form>

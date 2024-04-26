@@ -1,0 +1,29 @@
+﻿@using Capstone.Models.ViewModels.SubModels
+
+@model SearchQuery
+<h2 class="text-center TitleHighlight">Search</h2>
+<form class="form SearchForm" asp-action="Search" asp-controller="Search" method="post">
+    <div class="form-group d-flex">
+        <input class="form-control" type="text" asp-for="@Model.Name" placeholder="Search anime by name" />
+        <button type="submit" class="btn border"><i class="bi bi-search"></i></button>
+    </div>
+    <div class="SearchOptions">
+        <select class="form-select" asp-for="@Model.Genre">
+            <option value="">Genre</option>
+            <option value="comedy">Comedy</option>
+            <option value="Romance">Romance</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="action">Action</option>
+            <option value="sci-fi">Sci-Fi</option>
+            <option value="drama">Drama</option>
+        </select>
+        <select class="form-select" asp-for="@Model.Season">
+            <option value="">Season</option>
+            <option value="SPRING">Spring</option>
+            <option value="SUMMER">Summer</option>
+            <option value="FALL">Fall</option>
+            <option value="WINTER">Winter</option>
+        </select>
+        <input type="number" placeholder="Year" class="form-control" asp-for="@Model.Year" />
+    </div>
+</form>

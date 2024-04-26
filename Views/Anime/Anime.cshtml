@@ -1,0 +1,549 @@
+﻿@using Capstone.Models.ViewModels.SubModels;
+@using Capstone.Models;
+@using System.Drawing;
+
+@model Capstone.Models.ViewModels.AnimeViewModel;
+
+@{
+    string GenerateRgba(string backgroundColor, double backgroundOpacity)
+    {
+        Color color = ColorTranslator.FromHtml(backgroundColor);
+        int r = Convert.ToInt16(color.R);
+        int g = Convert.ToInt16(color.G);
+        int b = Convert.ToInt16(color.B);
+        return string.Format("rgba({0}, {1}, {2}, {3});", r, g, b, backgroundOpacity);
+    }
+
+    string FormatDate(int year, int month, int day)
+    {
+        string date = "";
+        if (month != 0)
+        {
+            date += month.ToString() + "-";
+            date += day.ToString() + "-";
+        }
+        date += year.ToString();
+        return date;
+    }
+
+}
+
+
+<div class="AnimeBanner ">
+    <div class="AnimeUserControls">
+        @if (User.Identity.IsAuthenticated)
+        {
+
+
+            <form asp-action="DeleteListItem" asp-controller="MediaList" method="post" asp-route-id="@Model.Anime.Id">
+                <div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h2 class="">Remove from list</h2>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this entry?
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center gap-5">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <button type="submit" class="btn btn-primary">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            @if (Model.ListEntry?.Completion != null)
+            {
+                <button type="button" class="btn HeaderButton" style="background-color: @(GenerateRgba(Model.Anime.ColorAvg, 1) ?? "")" data-bs-toggle="modal" data-bs-target="#DeleteModal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            }
+
+
+
+            <div>
+                <button class="btn HeaderButton" data-bs-toggle="modal" data-bs-target="#EditListItem@(Model.Anime.Id)" style="background-color: @(GenerateRgba(Model.Anime.ColorAvg, 1) ?? "")">
+                    @if (Model.ListEntry?.Completion == null)
+                    {
+                        <i class="bi bi-plus-lg"></i>
+
+                    }
+                    else
+                    {
+                        <i class="bi bi-pencil-square"></i>
+                    }
+                </button>
+                @await Component.InvokeAsync("ListEditor", new
+                    {
+                        item = Model.ListEntry ?? new MediaListItem()
+           {
+               AnimeId = Model.Anime.Id,
+               Title = Model.Anime.Title,
+               Image = Model.Anime.CoverImage,
+               Format = Model.Anime.Format,
+               Episodes = Model.Anime.Episodes
+
+           }
+                    })
+
+
+
+
+            </div>
+            <form asp-action="ToggleFavourite" asp-controller="Favourite" asp-route-animeId="@Model.Anime.Id" asp-route-cover="@Model.Anime.CoverImage" asp-route-name="@Model.Anime.Title" method="post">
+                <button type="submit" class="btn HeaderButton" id="AddFavouriteForm" style="background-color: @(GenerateRgba(Model.Anime.ColorAvg, 1) ?? "")">
+                    @if (Model.ListEntry?.IsFavourite == true)
+                    {
+                        <i class="bi bi-heart-fill"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-heart"></i>
+
+                    }
+
+                </button>
+            </form>
+
+        }
+    </div>
+
+    <img src="@(Model.Anime.BannerImage ?? "/Uploads/a4594801-2df2-40e9-b514-fdcc7bb510e6.png")" class="FitImage Banner" />
+    <h1 class="AnimeTitle">@Model.Anime.Title</h1>
+</div>
+
+
+
+<div class="AnimeWrapper">
+
+    <div class="AnimeSide">
+        <div class="cover">
+            <img src="@Model.Anime.CoverImage" alt="@Model.Anime.Title cover" class="FitImage" />
+        </div>
+        @if (Model.Anime.Rankings.FindAll(elem => elem.AllTime == true).Count != 0)
+        {
+            <div class="AnimeRankings">
+                <div class="d-flex gap-1 p-2">
+                    <i class="bi bi-star-fill" style="color: #E3C000"></i>
+                    <p><span class="fw-bold">#@Model.Anime.Rankings?.Find(elem => elem.AllTime == true && elem.Type == "rated")?.Rank</span> All-Time Ranking</p>
+                </div>
+                <div class="d-flex gap-1 p-2">
+                    <i class="bi bi-hearts" style="color:  #CE4993"></i>
+                    <p><span class="fw-bold">#@Model.Anime.Rankings?.Find(elem => elem.AllTime == true && elem.Type == "popular")?.Rank</span> All-Time Popularity</p>
+                </div>
+            </div>
+
+        }
+        <div class="AnimeData">
+            <dl>
+                <dt>Format</dt>
+                <dd>@Model.Anime.Format</dd>
+                <dt>Episodes</dt>
+                <dd>@(Model.Anime.Episodes != 0 ? Model.Anime.Episodes : "?")</dd>
+                <dt>Episode Duration</dt>
+                <dd>@(Model.Anime.Duration != null ? Model.Anime.Duration : "?") minutes</dd>
+                <dt>Status</dt>
+                <dd class="text-capitalize">@Model.Anime.Status</dd>
+                <dt>Start Date</dt>
+                <dd>
+                    @FormatDate(Model.Anime.StartDate?.Year ?? 0, Model.Anime.StartDate?.Month ?? 0, Model.Anime.StartDate?.Day ?? 0)
+                </dd>
+                @if (Model.Anime.EndDate.Year != null)
+                {
+                    <dt>End Date</dt>
+                    <dd>@FormatDate(Model.Anime.EndDate?.Year ?? 0, Model.Anime.EndDate?.Month ?? 0, Model.Anime.EndDate?.Day ?? 0)</dd>
+
+                }
+                @if (Model.Anime.Season != null)
+                {
+                    <dt>Season</dt>
+                    <dd class="text-capitalize">@Model.Anime.Season @Model.Anime.SeasonYear</dd>
+
+                }
+                <dt>Average Score</dt>
+                <dd>@(Model.Anime.AverageScore != null ? Model.Anime.AverageScore / 10 : "?")</dd>
+
+                <div class="MobileData">
+                    <dt>Mean Score</dt>
+                    <dd>@(Model.Anime.MeanScore != null ? Model.Anime.MeanScore / 10 : "?")</dd>
+                    <dt>Studios</dt>
+                    <dd>@Model.Anime.Studios.Find(elem => elem.IsMain)?.Name</dd>
+                    @if (Model.Anime.Studios.FindAll(elem => !elem.IsAnimationStudio).Count != 0)
+                    {
+                        <dt>Producers</dt>
+                        <dd>
+                            @foreach (var studio in Model.Anime.Studios.FindAll(elem => !elem.IsAnimationStudio))
+                            {
+                                <span class="d-block">@studio.Name</span>
+                            }
+                        </dd>
+
+                    }
+                    <dt>Source</dt>
+                    <dd class="text-capitalize">@Model.Anime.Source</dd>
+                    <dt>Genres</dt>
+                    <dd>
+                        @foreach (var genre in Model.Anime.Genres)
+                        {
+                            <span class="d-block">@genre</span>
+                        }
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+    <section class="AnimeBody">
+        <div>
+            @Html.Raw(Model.Anime.Description)
+        </div>
+        <ul class="nav nav-tabs" id="AnimeTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="characters-tab" data-bs-toggle="tab" data-bs-target="#characters" type="button" role="tab">Characters</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="staff-tab" data-bs-toggle="tab" data-bs-target="#staff" type="button" role="tab">Staff</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="stats-tab" data-bs-toggle="tab" data-bs-target="#stats" type="button" role="tab">Stats</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="watch-tab" data-bs-toggle="tab" data-bs-target="#watch" type="button" role="tab">Watch</button>
+            </li>
+@*             <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
+            </li>
+ *@
+
+        </ul>
+        <div class="tab-content" id="AnimeTabContent">
+
+            <div id="overview" class="tab-pane fade show active" role="tabpanel">
+                <section>
+                    <h5>Relations</h5>
+                    <div class="d-flex gap-3" id="relationBox">
+                        @foreach (var relation in Model.Anime.Relations)
+                        {
+                            <div style="position: relative">
+                                <a asp-action="Anime" style="background-image: url(@relation.CoverImage)" asp-controller="Anime" asp-route-id="@relation.Id" class="neuteredLink singleRelation ColorTransition" id="@relation.Id">
+                                    <div class="singleRelationTitle text-capitalize">
+                                        @relation.RelationType?.Replace('_', ' ')
+                                    </div>
+                                </a>
+                                @*                                 <div id="r@(relation.Id)" class="AnimeCardHover ToggleDisplay">
+                            <div class="d-flex justify-content-between">
+                            <p class="text-capitalize fw-bold">@relation.Season @(relation.SeasonYear != 0 ? relation.SeasonYear : "?")</p>
+                            <p>
+                            @if (relation.AverageScore != null)
+
+                            {
+
+                            @(relation.AverageScore / 10) <i class="bi bi-star-fill" style="color: @relation.ColorAvg"></i>
+                            }
+                            </p>
+                            </div>
+                            <p class="mb-3 small text-capitalize">@relation.Status</p>
+
+                            <p class="fw-bold" style="color: @relation.ColorAvg">@relation.Studios.FirstOrDefault()?.Name</p>
+                            <div class="d-flex gap-1 mb-3">
+                            <p class="fw-bold">@relation.Format</p>
+                            <p>- @(relation.Episodes != 0 ? relation.Episodes : "?")  Episodes</p>
+                            </div>
+
+                            <div class="smallCard">
+                            @foreach (string genre in relation.Genres.Take(3))
+                            {
+                            <span style="background-color: @relation.ColorAvg" class="SearchGenres">@genre</span>
+                            }
+                            </div>
+                            </div>
+                            *@
+                            </div>
+
+
+
+                        }
+
+                    </div>
+                </section>
+                @if (Model.Anime.Characters.Count != 0)
+                {
+
+                    <section>
+                        <h4>Characters</h4>
+                        <div class="d-flex flex-wrap gap-3">
+                            @foreach (var character in Model.Anime.Characters.Take(6))
+                            {
+                                <div class="CharacterOverview">
+                                    <div class="smallCard">
+
+                                        <img src="@character.Image" alt="@character.Name" class="SmallImage" />
+                                        <div class="cardTextLeft Text">
+                                            <p>@character.Name</p>
+                                            <p class="text-capitalize card-subtitle ContentSubtitle">@character.Role</p>
+                                        </div>
+                                    </div>
+                                    @if (character.VoiceActor.Name != null)
+                                    {
+
+                                        <div class="smallCard">
+                                            <div class="cardTextRight Text">
+                                                <p>@character.VoiceActor?.Name</p>
+                                                <p class="card-subtitle ContentSubtitle">@character.VoiceActor?.Language</p>
+                                            </div>
+                                            <img src="@character.VoiceActor?.Image" alt="@character.VoiceActor?.Name" class="SmallImage" />
+
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </section>
+                }
+                @if (Model.Anime.Staff.Count != 0)
+                {
+                    <section>
+                        <h4>Staff</h4>
+                        <div class="d-flex gap-3 flex-wrap ">
+
+                            @foreach (var staff in Model.Anime.Staff.Take(6))
+                            {
+                                <div class="CharacterOverview">
+
+                                    <div class="smallCard">
+
+                                        <img src="@staff.Image" alt="@staff.Name" class="SmallImage FitImage" />
+                                        <div class="cardTextLeft Text">
+                                            <p>@staff.Name</p>
+                                            <p class="text-capitalize card-subtitle ContentSubtitle">@staff.Role</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        </div>
+
+                    </section>
+
+                }
+                @*
+                <section>
+                <h4>Statistics</h4>
+                </section>
+                *@
+                @if (Model.Anime.StreamingEpisodes.Count != 0)
+                {
+                    <section>
+                        <h4>Watch</h4>
+                        <div class="d-flex flex-wrap gap-3">
+                            @foreach (var ep in Model.Anime.StreamingEpisodes.Take(3))
+                            {
+                                <a style="background-image: url(@ep.Thumbnail)" href="@ep.Url" class="streamingEpisodeLink ColorTransition" title="@ep.Title">
+                                    <div class="streamingEpisodeTitle">@ep.Title</div>
+                                </a>
+
+                            }
+                        </div>
+
+                    </section>
+
+                }
+                @if (Model.Anime.Recommendations.Count != 0)
+                {
+                    <section>
+                        <h4>Recommendations</h4>
+                        <div class="d-flex gap-3 RecommendationWrapper">
+                            @foreach (Recommendation rec in Model.Anime.Recommendations)
+                            {
+
+                                <div>
+
+                                    <div class="RecommendationPos">
+                                        <a asp-action="Anime" asp-controller="Anime" asp-route-id="@rec.RecommendedMedia?.Id" class="ColorTransition neuteredLink">
+
+                                            <div class="Recommendation RecommendationPos" id="@rec.Id">
+
+                                                <div class="d-flex">
+                                                    <img src="@rec.RecommendedMedia?.CoverImage" class="MediumImage" />
+                                                </div>
+
+                                                <div class="Text align-items-start text-start ToggleDisplay RecommendationText" id="rec@(rec.Id)">
+                                                    <p class="text-capitalize">@rec.Rating <i class="bi bi-caret-up RecVote"></i><i class="bi bi-caret-down RecVote"></i></p>
+                                                </div>
+                                            </div>
+                                            <p class="text-center">@rec.RecommendedMedia?.Title</p>
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+
+                            }
+
+                        </div>
+                    </section>
+                }
+                @if (Model.Anime.Trailer != null)
+                {
+                    <section>
+                        <h4>Trailer</h4>
+                        <div class="TrailerContainer">
+                            <iframe src="@("https://www.youtube-nocookie.com/embed/" + Model.Anime.Trailer?.Id)" controls=0
+                                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </section>
+                }
+
+
+            </div>
+            <div class="tab-pane fade" id="reviews" role="tabpanel">
+                <p class="text-center">Not Implemented Yet</p>
+            </div>
+            <div class="tab-pane fade" id="characters" role="tabpanel">
+                <div class="characterSection pt-3">
+                    @foreach (var character in Model.Anime.Characters)
+                    {
+                        <div class="CharacterOverview">
+                            <div class="smallCard">
+
+                                <img src="@character.Image" alt="@character.Name" class="SmallImage" />
+                                <div class="Text align-items-start text-start">
+                                    <p>@character.Name</p>
+                                    <p class="text-capitalize card-subtitle ContentSubtitle">@character.Role</p>
+                                </div>
+                            </div>
+                            <div class="smallCard">
+                                <div class="Text align-items-end text-end">
+                                    <p>@character.VoiceActor?.Name</p>
+                                    <p class="card-subtitle ContentSubtitle">@character.VoiceActor?.Language</p>
+                                </div>
+                                <img src="@character.VoiceActor?.Image" alt="@character.VoiceActor?.Name" class="SmallImage" />
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div id="staff" class="tab-pane fade pt-3">
+                <div class="characterSection pt-3">
+                    @foreach (var staff in Model.Anime.Staff)
+                    {
+                        <div class="CharacterOverview">
+
+                            <div class="smallCard">
+
+                                <img src="@staff.Image" alt="@staff.Name" class="SmallImage" />
+                                <div class="Text align-items-start text-start">
+                                    <p>@staff.Name</p>
+                                    <p class="text-capitalize card-subtitle ContentSubtitle">@staff.Role</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+            <div id="stats" class="tab-pane fade">
+                <div class="stats-container">
+                    <div>
+                        @(await Component.InvokeAsync("Chart", new { Stats = Model.Anime.Stats.Score, caption = "Ratings" }))
+                    </div>
+                    <div>
+                        @(await Component.InvokeAsync("Chart", new { Stats = Model.Anime.Stats.Status, caption = "Entries" }))
+                    </div>
+                </div>
+            </div>
+            <div id="watch" class="tab-pane fade">
+                <div class="d-flex flex-wrap gap-3 pt-3">
+                    @foreach (var ep in Model.Anime.StreamingEpisodes)
+                    {
+                        <a style="background-image: url(@ep.Thumbnail)" href="@ep.Url" class="streamingEpisodeLink ColorTransition">
+                            <div class="streamingEpisodeTitle">@ep.Title</div>
+                        </a>
+
+                    }
+                </div>
+            </div>
+
+        </div>
+</div>
+
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        const recs = document.querySelectorAll(".Recommendation")
+        for (rec of recs) {
+
+            rec.addEventListener("mouseover", function () {
+                let info = document.getElementById(`rec${this.id}`)
+
+                info.classList.toggle("ToggleDisplay")
+            })
+            rec.addEventListener("mouseout", function () {
+                let info = document.getElementById(`rec${this.id}`)
+
+                info.classList.toggle("ToggleDisplay")
+            })
+        }
+        const favourite = document.getElementById("AddFavouriteForm")
+        if (document.querySelector(`.bi-heart`)?.classList.contains("bi-heart")) {
+            favourite.addEventListener("mouseover", function () {
+                let heart = document.querySelector(`.bi-heart`)
+
+                heart.classList.toggle("bi-heart")
+                heart.classList.toggle("bi-heart-fill")
+
+            })
+            favourite.addEventListener("mouseout", function () {
+                let heart = document.querySelector(`.bi-heart-fill`)
+
+                heart.classList.toggle("bi-heart")
+                heart.classList.toggle("bi-heart-fill")
+            })
+        }
+
+
+
+        const recVoteArrows = document.querySelectorAll('.RecVote')
+
+
+        for (const arrow of recVoteArrows) {
+            if (arrow.classList.contains("bi-caret-up")) {
+                DOM.toggleClassMouseover(arrow, "bi-caret-up")
+                DOM.toggleClassMouseover(arrow, "bi-caret-up-fill")
+            } else if (arrow.classList.contains("bi-caret-down")) {
+                DOM.toggleClassMouseover(arrow, "bi-caret-down")
+                DOM.toggleClassMouseover(arrow, "bi-caret-down-fill")
+
+            }
+        }
+        const completed = document.getElementById("Completion")
+        const episodesWatched = document.getElementById("EpisodesWatched")
+
+        const cards = document.querySelectorAll(".singleRelation")
+        for (card of cards) {
+
+            card.addEventListener("mouseover", function () {
+                let info = document.getElementById(`r${this.id}`)
+
+                info.classList.toggle("ToggleDisplay")
+            })
+            card.addEventListener("mouseout", function () {
+                let info = document.getElementById(`r${this.id}`)
+
+                info.classList.toggle("ToggleDisplay")
+            })
+        }
+
+    </script>
+}

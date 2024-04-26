@@ -1,0 +1,26 @@
+﻿@using Capstone.Models.ViewModels;
+@model List<Anime>
+@await Component.InvokeAsync("SearchForm")
+<h2 class="TitleHighlight text-center">Most Popular</h2>
+<div class="d-flex gap-5 flex-wrap justify-content-center">
+    @await Component.InvokeAsync("SearchCard", new { list = Model })
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        const cards = document.querySelectorAll(".SearchImgContainer")
+        for (card of cards) {
+
+            card.addEventListener("mouseover", function () {
+                let info = document.getElementById(`r${this.id}`)
+
+                info.classList.toggle("ToggleDisplayUniversal")
+            })
+            card.addEventListener("mouseout", function () {
+                let info = document.getElementById(`r${this.id}`)
+
+                info.classList.toggle("ToggleDisplayUniversal")
+            })
+        }
+    </script>
+}

@@ -1,0 +1,1004 @@
+html {
+    font-size: 14px;
+}
+
+header {
+    background-color: #0a001b;
+}
+
+.navbar-light .navbar-brand {
+    color: white;
+}
+
+    .navbar-light .navbar-brand:hover {
+        color: #c8c5d6
+    }
+
+input:focus {
+    box-shadow: none !important;
+}
+
+
+.btn-secondary {
+    background-color: #e7e5f2 !important;
+    color: black !important;
+    border-color: #c8c5d6 !important;
+}
+
+    .btn-secondary:hover {
+        background-color: #0a001b !important;
+        color: white !important;
+        border: 1px solid black !important;
+    }
+
+    .btn-secondary:focus {
+        box-shadow: none !important;
+    }
+
+.btn-primary {
+    background-color: #c8c5d6 !important;
+    border-color: #c8c5d6 !important;
+    color: black !important;
+}
+
+    .btn-primary:hover {
+        background-color: #0a001b !important;
+        color: white !important;
+        border: 1px solid black !important;
+    }
+
+    .btn-primary:focus {
+        box-shadow: none !important;
+    }
+
+body {
+    margin-bottom: 60px;
+    color: var(--primary);
+    background-color: #c8c5d6;
+}
+
+
+
+* {
+    font-family: "Palanquin", sans-serif;
+}
+
+:root {
+    --primary: black;
+    --white: white;
+    --opaque: rgb(42, 42, 42, 0.6);
+}
+
+
+
+
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+
+.navbar {
+    padding: 1rem;
+}
+
+.container {
+    padding-top: 1rem;
+    border-radius: 0.375rem
+}
+
+.dropdown-menu a {
+    color: black !important;
+}
+
+.dropdown-menu button {
+    color: black !important;
+    padding: 0;
+}
+
+.CarouselImage {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    display: block;
+}
+
+.CarouselText {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: rgba(25,25,25, 0.75);
+    padding: 3rem;
+    text-align: center;
+    font-size: 2.5rem;
+    bottom: 0;
+    left: 0;
+}
+
+    .CarouselText h1 {
+        font-size: 3rem;
+    }
+
+.CarouselParagraphBox {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.CarouselParagraph {
+    font-size: 1.3rem;
+    padding: 1rem;
+}
+
+nav .container-fluid {
+    flex-wrap: nowrap !important;
+}
+
+#notifications {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: green;
+    border-radius: 100%;
+    font-size: 0.7rem;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#notifDropdown {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.3rem;
+    border: 1px solid black;
+    position: absolute;
+    left: -325px;
+    top: 1rem;
+    z-index: 20;
+    width: 325px;
+    font-size: 0.9rem;
+    background-color: white;
+    animation: op-trans 0.3s ease-out, quickTranslate 0.3s ease-out;
+    overflow-y: auto;
+    max-height: 350px;
+}
+
+
+    #notifDropdown button {
+        font-size: 0.8rem;
+    }
+
+@keyframes quickTranslate {
+    from {
+        transform: translateY(-50%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.notificationsBox {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.SingleNotification {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    padding-top: 0.25rem;
+    border-bottom: 1px solid rgba(177,177,177,0.6);
+}
+
+.NotifIcon {
+    display: flex;
+    padding: 0.25rem 0;
+    margin: 0;
+}
+
+    .NotifIcon i {
+        margin-left: 8px;
+        display: flex;
+        align-items: flex-start;
+        border: 2px solid black;
+        border-radius: 50%;
+    }
+
+@media screen and (max-width: 768px) {
+    .notificationsBox {
+        position: static;
+    }
+
+    #notifDropdown {
+        left: calc((100vw - 325px) / 2);
+    }
+}
+
+.NotifImage {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.ListButton {
+    border: 2px solid #755e98;
+    border-radius: 50%;
+    color: #0A001B;
+}
+
+.neuteredLink {
+    text-decoration: none;
+    color: var(--primary)
+}
+
+
+.singleRelation {
+    position: relative;
+    background-position: center;
+    background-size: cover;
+    min-width: 100px;
+    height: 150px;
+    display: flex;
+    color: var(--white);
+    align-items: flex-end;
+}
+
+
+.singleRelationTitle {
+    background-color: rgb(42, 42, 42, 0.6);
+    flex-basis: 100%;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+#relationBox {
+    overflow: auto;
+    padding: 0.5rem 0;
+}
+
+
+.ProfileInfo {
+    display: flex;
+    gap: 1rem;
+}
+
+.profile-picture {
+    position: absolute;
+    bottom: 0;
+    left: 1rem;
+    width: 100px;
+    z-index: 10;
+}
+
+.profile-header {
+    flex-basis: 100%;
+}
+
+.profile-content {
+    width: 100%;
+}
+
+
+#ProfileTabs .nav-link {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+}
+
+header a.nav-link {
+    padding: 0.5rem;
+    color: white !important;
+}
+
+.profile-title {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    left: 0;
+    background-color: rgba(255,255,255,0.85);
+    width: 100%;
+}
+
+.profile-title-text {
+    position: relative;
+    left: 116px;
+    width: calc(100% - 116px);
+    font-size: 1.5rem;
+}
+
+.ProfileOverview {
+    display: block;
+    gap: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    justify-content: space-between;
+}
+
+.ProfileUserControls {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.ProfileTextarea {
+    width: 100%;
+    max-width: 80%;
+    margin: 0 auto;
+    position: relative;
+}
+
+    .ProfileTextarea textarea {
+        height: 150px;
+        margin-bottom: 0.25rem;
+    }
+
+@media screen and (min-width: 1000px) {
+    .ProfileTextarea {
+        max-width: 600px;
+    }
+}
+
+#fileInput {
+    display: none;
+}
+
+
+@media screen and (max-width: 768px) {
+    #imagePreview {
+        display: none;
+    }
+}
+
+#icon {
+    width: 100px;
+    cursor: pointer;
+}
+
+.ProfileBanner {
+    max-height: 150px;
+}
+
+.ProfileAboutMe {
+    overflow: hidden;
+    transition: all 0.7s ease-in-out;
+}
+
+.ProfileLatest {
+    flex-basis: 35%;
+}
+
+.ProfileTextInfo {
+    flex-basis: 55%;
+}
+
+.ProfileFavourites {
+    display: flex;
+    gap: 1rem;
+    overflow: auto;
+}
+
+@media screen and (min-width: 768px) {
+    .profile-picture {
+        position: absolute;
+        bottom: 0;
+        left: 1rem;
+        width: 200px;
+        z-index: 10;
+    }
+
+    .profile-title-text {
+        position: relative;
+        left: 224px;
+        font-size: 1.5rem;
+        width: calc(100% - 224px);
+    }
+
+    .ProfileBanner {
+        max-height: 225px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .profile-title-text {
+        font-size: calc(1.375rem + 1.5vw);
+        width: calc(100% - 224px);
+    }
+
+    .ProfileOverview {
+        display: flex;
+        gap: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        justify-content: space-between;
+    }
+}
+
+.smallCard {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+
+
+.cardTextLeft {
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+    padding: 0.25rem;
+}
+
+.cardTextRight {
+    display: flex;
+    align-items: flex-end;
+    text-align: right;
+    padding: 0.25rem;
+}
+
+
+
+h1 span {
+    float: right;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+h1 {
+    clear: both;
+}
+
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.personal-info-subtitle {
+    font-weight: bold;
+}
+
+.friend-list-propic {
+    width: 83px;
+    height: auto;
+    border: 1px solid gray;
+}
+
+.ToggleDisplayUniversal {
+    display: none !important;
+}
+
+.ToggleDisplayReversed {
+    display: none;
+}
+
+.MobileCells {
+    display: none;
+}
+
+
+@media screen and (min-width: 1200px) {
+    .ToggleDisplay {
+        display: none !important;
+    }
+
+    .ToggleDisplayReversed {
+        visibility: hidden;
+        display: inline-block;
+    }
+
+    .MobileCells {
+        display: table-cell;
+    }
+}
+
+#collapserElement {
+    text-align: right;
+}
+
+.ListEdit {
+    float: right;
+    display: flex;
+    animation: op-trans 0.25s linear;
+    gap: 0.25rem;
+}
+
+    .ListEdit button {
+        display: flex;
+        width: 24px;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .ListEdit i {
+        transform: scale(0.75);
+    }
+
+
+@media screen and (min-width: 768px) {
+    #collapserElement {
+        text-align: left;
+    }
+
+    .ListEdit button {
+        display: flex;
+        width: 32px;
+        height: 32px;
+        align-items: center;
+    }
+
+    .ListEdit i {
+        transform: scale(1);
+    }
+}
+
+
+.ListRow * {
+    vertical-align: middle;
+}
+
+
+.ContentSubtitle {
+    color: slategray;
+    font-size: 0.8rem;
+}
+
+.AnimeBanner {
+    position: relative;
+    margin-bottom: 0.5rem;
+    min-height: 150px;
+}
+
+.AnimeRankings {
+    display: none;
+}
+
+    .AnimeRankings p {
+        margin: 0;
+    }
+
+.AnimeUserControls {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+    .AnimeUserControls i {
+        mix-blend-mode: difference;
+        color: rgba(170,170,170);
+    }
+
+.HeaderButton {
+    background-color: rgba(200,200,200,1);
+    box-shadow: 2px 2px 4px black;
+}
+
+
+.Banner {
+    width: 100%;
+    max-height: 250px;
+}
+
+.FitImage {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.AddFormStyle {
+    width: 66%;
+    margin: 0 auto;
+}
+
+.SmallImage {
+    max-height: 100px;
+    min-height: 100px;
+    min-width: 66.66px;
+    max-width: 66.66px;
+    height: auto;
+}
+
+.MediumImage {
+    width: 120px;
+    height: 180px
+}
+
+.SearchForm {
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.SearchResultsContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 0 2rem;
+}
+
+.TitleHighlight {
+    border-bottom: 2px solid #755e98;
+    padding-bottom: 0.5rem;
+    margin-left: 35%;
+    margin-right: 35%;
+    margin-bottom: 2rem;
+    display: inline-block;
+    width: 30%;
+}
+
+.SearchOptions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.SearchByName {
+    display: flex;
+    gap: 1rem;
+}
+
+
+@media screen and (max-width: 1400px) {
+    .SearchResultsContainer :nth-child(4) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .SearchResultsContainer :nth-child(3) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .SearchForm {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .SearchResultsContainer :nth-child(2) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .SearchForm {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .SearchOptions {
+        flex-direction: column;
+        width: 35%;
+    }
+
+    .SearchByName {
+    }
+}
+
+
+
+
+
+.SearchImg {
+    width: 230px;
+    height: 325px;
+    object-fit: cover;
+}
+
+.SearchCard {
+    position: relative;
+}
+
+.AnimeCardHover {
+    gap: 1rem;
+    position: absolute;
+    right: -250px;
+    z-index: 10;
+    top: 36px;
+    min-width: 300px;
+    max-width: 300px;
+    background-color: white;
+    font-size: 0.8rem;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    animation: op-trans 0.3s;
+}
+
+.AnimeSide {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.MobileData {
+    display: none;
+}
+
+.SearchGenres {
+    border-radius: 20px;
+    padding: 0.5rem;
+    font-size: 0.7rem;
+}
+
+.SearchCard p {
+    margin-bottom: 0;
+}
+
+section {
+    margin: 2rem 0;
+}
+
+.CharacterOverview {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #F2F2F2;
+}
+
+.Text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.characterSection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+#characters {
+    padding: 0;
+    padding-top: 1rem;
+}
+
+.streamingEpisodeLink {
+    background-position: center;
+    background-size: cover;
+    height: 96px;
+    width: 100%;
+    text-decoration: none;
+    color: var(--white);
+    display: flex;
+    align-items: flex-end;
+}
+
+.streamingEpisodeTitle {
+    background-color: rgb(42, 42, 42, 0.6);
+    height: 32px;
+    flex-basis: 100%;
+    text-align: center;
+    overflow: hidden;
+    padding: 0 0.5rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chart-container {
+    width: 325px;
+}
+
+.RecommendationPos {
+    width: 120px;
+    position: relative;
+}
+
+.RecommendationWrapper {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.RecommendationText {
+    position: absolute;
+    z-index: 10;
+    color: var(--white);
+    text-align: center;
+    bottom: 0;
+    background-color: var(--opaque);
+    width: 100%;
+    padding: 0.33rem;
+    animation: op-trans 0.2s linear;
+}
+
+.CommentImage {
+    max-width: 350px;
+    object-fit: cover;
+}
+
+.CommentControls {
+    display: flex;
+    gap: 1rem;
+    animation: op-trans 0.2s
+}
+
+@keyframes op-trans {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+.ColorTransition {
+    transition: color 0.1s linear;
+}
+
+.SmallRoundedImage {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.MediumRoundedImage {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.RecVote {
+    cursor: pointer;
+}
+
+.ProfileMediaList {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    padding: 0.25rem 0;
+    margin: 0.25rem 0;
+    display: block;
+}
+
+.TrailerContainer {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%;
+}
+
+    .TrailerContainer iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+.AnimeTitle {
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    width: 100%;
+    padding: 0.125rem;
+    background-color: rgba(255,255,255,0.85);
+}
+
+#AnimeTabs .nav-link {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+}
+
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 1.5rem;
+    gap: 1rem;
+}
+
+
+@media screen and (min-width: 1000px) {
+    .CharacterOverview {
+        width: 325px;
+    }
+
+    .streamingEpisodeLink {
+        width: 325px;
+    }
+}
+
+
+@media screen and (min-width: 1200px) {
+    .AnimeSide {
+        font-size: 1rem;
+    }
+
+    .chart-container {
+        width: 400px;
+    }
+}
+
+
+@media screen and (min-width: 768px) {
+    .personal-info {
+        min-width: 270px;
+        max-width: 270px;
+    }
+
+
+
+
+    /*    .AnimeTitle {
+        text-align: left;
+    }
+*/
+    .AnimeWrapper {
+        display: flex;
+    }
+
+
+
+    .AnimeBanner {
+        display: block;
+    }
+
+    .AnimeRankings {
+        display: block;
+    }
+
+    .AnimeSide {
+        min-width: 230px;
+        max-width: 230px;
+        display: block;
+    }
+
+    .AnimeHeader {
+        display: flex;
+        gap: 2rem;
+    }
+
+
+    .AnimeBody {
+        flex-grow: 1;
+        padding: 1rem;
+        overflow: hidden;
+    }
+
+
+    .MobileData {
+        display: block;
+    }
+}
+
+.ListSorterBox {
+    display: flex;
+    flex-direction: column;
+}
+
+    .ListSorterBox * {
+        font-size: 0.50rem;
+    }

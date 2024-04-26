@@ -1,0 +1,51 @@
+﻿@using Capstone.Models.ViewModels;
+@model List<Anime>
+
+@{
+    string randomId = Anime.CreateString(16);
+}
+
+<div class="SearchResultsContainer">
+    @foreach (Anime elem in Model)
+    {
+        <div class="SearchCard">
+            <a asp-action="Anime" asp-controller="Anime" class="neuteredLink" asp-route-id="@elem.Id">
+
+                <div id="@(randomId)" style="width: 230px" class="SearchImgContainer">
+                    <img src="@elem.CoverImage" alt="@elem.Title cover" class="SearchImg mb-3" />
+                    <h5 class="text-center">@elem.Title</h5>
+                </div>
+            </a>
+            <div id="r@(randomId)" class="AnimeCardHover ToggleDisplayUniversal">
+                <div class="d-flex justify-content-between">
+
+                    <p class="text-capitalize fw-bold">@elem.Season <span>@(elem.SeasonYear != 0 ? elem.SeasonYear : "")</span></p>
+                    <p>
+                        @if (elem.AverageScore != null)
+
+                        {
+                            @(elem.AverageScore / 10) <i class="bi bi-star-fill" style="color: #E3C000"></i>
+                        }
+                    </p>
+                </div>
+                <p class="mb-3 small text-capitalize">@elem.Status</p>
+
+                <p class="fw-bold" style="color: @elem.ColorAvg">@elem.Studios.FirstOrDefault()?.Name</p>
+                <div class="d-flex gap-1 mb-3">
+                    <p class="fw-bold">@elem.Format</p>
+                    <p>- @(elem.Episodes != 0 ? elem.Episodes : "?")  Episodes</p>
+                </div>
+
+                <div class="smallCard">
+                    @foreach (string genre in elem.Genres.Take(3))
+                    {
+                        <span style="background-color: @elem.ColorAvg" class="SearchGenres">@genre</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        randomId += Anime.CreateString(1);
+
+    }
+</div>

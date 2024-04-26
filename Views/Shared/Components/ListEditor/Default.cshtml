@@ -1,0 +1,64 @@
+﻿@model MediaListItem
+
+<div class="modal fade" id="EditListItem@(Model.AnimeId)" tabindex="-1" aria-labelledby="EditListItemLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="EditListItemLabel">Update Entry</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="form" asp-action="UpdateListItem" asp-controller="MediaList" method="post">
+                <div class="modal-body AddFormStyle">
+                    <div class="form-group">
+                        <input type="hidden" asp-for="@Model.AnimeId" value="@Model.AnimeId" />
+                        <input type="hidden" asp-for="@Model.Title" value="@Model.Title"/>
+                        <input type="hidden" asp-for="@Model.Image" value="@Model.Image"/>
+                        <input type="hidden" asp-for="@Model.Episodes" value="@Model.Episodes" />
+                        <input type="hidden" asp-for="@Model.Format" value="@Model.Format" />
+
+                        <label class="form-label">Stats:</label>
+                        <select asp-for="@Model.Completion" id="Completion" class="form-select">
+                            <option value="@MediaListItem.CompletionState.Watching">Watching</option>
+                            <option value="@MediaListItem.CompletionState.Completed">Completed</option>
+                            <option value="@MediaListItem.CompletionState.OnHold">On-hold</option>
+                            <option value="@MediaListItem.CompletionState.Dropped">Dropped</option>
+                            <option value="@MediaListItem.CompletionState.Planned">Plan to Watch</option>
+                        </select>
+
+                    </div>
+                    <div class="d-flex gap-3">
+                        <div class="form-group">
+                            <label class="form-label">Episodes Watched:</label>
+                            <input asp-for="@Model.EpisodesWatched" type="number" id="EpisodesWatched" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Rating:</label>
+                            <select asp-for="@Model.Rating" class="form-select">
+                                <option selected> </option>
+                                <option value="10">10</option>
+                                <option value="9">9</option>
+                                <option value="8">8</option>
+                                <option value="7">7</option>
+                                <option value="6">6</option>
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notes:</label>
+                        <textarea class="form-control" asp-for="@Model.Notes"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

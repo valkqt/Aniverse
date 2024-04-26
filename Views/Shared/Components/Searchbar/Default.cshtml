@@ -1,0 +1,9 @@
+﻿@using Capstone.Models.ViewModels.SubModels
+@model SearchQuery
+
+<form asp-action="Search" asp-controller="Search" method="post" class="d-flex">
+    <div class="form-group">
+        <input asp-for="@Model.Name" type="text" class="form-control" placeholder="Search anime..."/>
+    </div>
+    <button class="btn d-flex justify-content-center align-items-center" type="submit"><i class="bi bi-search" style="color: white"></i></button>
+</form>

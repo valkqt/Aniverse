@@ -1,0 +1,9 @@
+﻿@model ChartJsViewModel
+<div class="chart-container">
+    <canvas id="@Model.Name" ></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript">
+    var ctx = document.getElementById(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Name)));
+    var myChart = new Chart(ctx, @Html.Raw(Model.ChartJson) );
+</script>

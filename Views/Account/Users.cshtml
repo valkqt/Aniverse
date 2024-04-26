@@ -1,0 +1,425 @@
+﻿@using Capstone.Models.ViewModels;
+@model ProfileViewModel
+
+<div>
+    <div class="profile-header">
+        <div class="AnimeBanner">
+            <div class="d-flex gap-3 my-3 px-3 ProfileUserControls">
+                <a asp-action="List" asp-controller="MediaList" asp-route-id="@Model.User.Id" class="btn btn-primary"><i class="bi bi-list"></i></a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @if (User.Identity.Name == Model.User.Id.ToString())
+                    {
+                        <div>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#EditProfileModal"><i class="bi bi-pencil-square"></i></button>
+                        </div>
+                    }
+                    else
+                    {
+                        <form method="post" asp-action="AddFriend" asp-controller="Friends" asp-route-id="@Model.User.Id" asp-route-isFriend="@Model.Friends.Exists(f => f.Id == int.Parse(User.Identity.Name))">
+
+                            <button class="btn btn-primary d-flex justify-content-center align-items-center @(Model.Friends.Exists(f => f.Id == int.Parse(User.Identity.Name)) ? "disabled" : "")" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                    <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+                                </svg>
+                            </button>
+                        </form>
+                    }
+                }
+            </div>
+            <img src="@("/Uploads/" + (Model.User.ProfileBanner ?? "a4594801-2df2-40e9-b514-fdcc7bb510e6.png"))" class="FitImage ProfileBanner" />
+            <div class="profile-picture">
+
+                <img class="img-fluid" src="@("/Uploads/" + (Model.User.ProfilePicture ?? "cd9e57ae-58d3-49ba-b296-5d9f9acfe569.png") )" />
+            </div>
+            <div class="profile-title">
+                <h1 class="profile-title-text">@Model.User.Username</h1>
+            </div>
+        </div>
+    </div>
+    <div class="ProfileInfo">
+        <div class="profile-content" id="content">
+            <ul class="nav nav-tabs" id="ProfileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link " id="diary-tab" data-bs-toggle="tab" data-bs-target="#diary" type="button" role="tab">Diary</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="favourites-tab" data-bs-toggle="tab" data-bs-target="#favourites" type="button" role="tab">Favourites</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="stats-tab" data-bs-toggle="tab" data-bs-target="#stats" type="button" role="tab">Stats</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="friends-tab" data-bs-toggle="tab" data-bs-target="#friends" type="button" role="tab">Friends</button>
+                </li>
+                @*                 <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
+                </li>
+                *@
+            </ul>
+
+            <div class="tab-content" id="AnimeTabContent">
+                <div class="tab-pane fade show active p-3 " id="overview" role="tabpanel">
+                    <div class="ProfileOverview">
+                        <div class="ProfileTextInfo">
+                            <div>
+                                <div class="ProfileAboutMe">
+                                    <h4>About @Model.User.Username</h4>
+                                    @Model.User.AboutMe
+                                </div>
+                                <button class="btn" id="expander" style="display: block;margin: 0 auto; font-size: 1.5rem" onclick="SetAboutOverflow()"><i class="bi bi-arrows-expand"></i></button>
+
+                            </div>
+                        </div>
+                        <div class="ProfileLatest">
+                            <div class="mb-5 d-flex flex-column gap-2">
+                                <h5 class="text-center">Latest Updates</h5>
+                                @if (Model.MediaList.Count == 0)
+                                {
+                                    <p class="text-secondary text-center pt-3"> There are no updates to view</p>
+                                }
+
+
+                                @foreach (MediaListItem item in Model.MediaList.OrderByDescending(elem => elem.LastUpdate).Take(3))
+                                {
+                                    <div class="">
+                                        <a asp-action="Anime" asp-controller="Anime" asp-route-id="@item.AnimeId" class="d-flex justify-content-between neuteredLink ColorTransition" title="@item.Title">
+
+                                            <div class="smallCard">
+                                                <div>
+                                                    <img src="@item.Image" class="SmallImage" style="max-width: 100px; height: auto;" />
+                                                </div>
+                                                <div class="cardTextLeft Text">
+                                                    <p>@item.Title</p>
+                                                    <p class="card-subtitle ContentSubtitle">@item.EpisodesWatched / @item.Episodes Episodes</p>
+                                                </div>
+                                            </div>
+                                            <div class="smallCard">
+                                                <div class="cardTextRight Text" style="white-space:nowrap">
+                                                    <p>@item.Completion</p>
+                                                    <p class="card-subtitle ContentSubtitle">@item.LastUpdate</p>
+                                                </div>
+
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                            <div>
+                                <h5 class="text-center">Latest Posts</h5>
+                                @if (Model.ProfileComments.FindAll(c => c.AuthorId == Model.User.Id).Count == 0)
+                                {
+                                    <p class="text-secondary text-center pt-3"> There are no posts to view</p>
+                                }
+                                @foreach (ProfileComment comment in Model.ProfileComments.FindAll(c => c.AuthorId == Model.User.Id).Take(3))
+                                {
+                                    <div>
+                                        <a asp-action="Users" asp-controller="Account" asp-route-id="@comment.AuthorId" class="neuteredLink ColorTransition d-inline-block" title="@comment.Author?.Username">
+
+                                            <div class="d-flex gap-3">
+                                                <img src=" @("/Uploads/" + comment.Author?.ProfilePicture)" class="rounded-circle" style="width: 36px; height: 36px;object-fit:cover;" />
+                                                <h5>@comment.Author?.Username</h5>
+                                            </div>
+                                        </a>
+
+                                        <p class="">@comment.Text</p>
+                                        <p class="ContentSubtitle">@comment.Timestamp</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade py-3" id="diary" role="tabpanel">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+
+                        @await Component.InvokeAsync("CommentArea", new
+                            {
+                                id = Model.User.Id,
+                                author = int.Parse(User.Identity.Name),
+                                areaType = "post"
+
+                            })
+                        <hr />
+
+
+                    }
+                    <div style="width: 80%; margin: 0 auto">
+                        @foreach (ProfileComment comment in Model.ProfileComments.OrderByDescending(c => c.Timestamp))
+                        {
+                            <div>
+                                <div class="d-flex justify-content-between CommentHeader" id="@(comment.Id)">
+                                    <a class="neuteredLink ColorTransition d-inline-block" asp-action="Users" asp-controller="Account" asp-route-id="@comment.AuthorId">
+                                        <div class="d-flex gap-3">
+                                            <img src=" @("/Uploads/" + comment.Author?.ProfilePicture)" class="rounded-circle" style="width: 36px; height: 36px;object-fit:cover;" />
+                                            <h5>@comment.Author?.Username</h5>
+                                            <button class="btn invisible">
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
+                                        </div>
+                                    </a>
+
+                                    @if (User.Identity.Name == Model.User.Id.ToString() || comment.AuthorId.ToString() == User.Identity.Name)
+                                    {
+                                        <div class="e@(comment.Id) ToggleDisplay CommentControls">
+                                            <button type="button" class="btn border" data-bs-toggle="modal" data-bs-target="#EditCommentModal@(comment.Id)">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+
+                                            <button type="button" class="btn border" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal@(comment.Id)">
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
+                                        </div>
+                                        <div class="modal fade" id="DeleteCommentModal@(comment.Id)" tabindex="-1" aria-labelledby="DeleteCommentModal@(comment.Id)Label" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form asp-action="DeleteComment" asp-controller="Account" method="post" asp-route-id="@comment.Id">
+
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="DeleteCommentModal@(comment.Id)Label">Delete Comment</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are you sure?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                            <button type="submit" class="btn btn-primary">Yes</button>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @await Component.InvokeAsync("EditCommentModal", new { comment = comment })
+
+                                    }
+
+                                </div>
+
+                                <p class="">@comment.Text</p>
+                                @if (comment.Image != null)
+                                {
+                                    <div class="py-3">
+                                        <img class="CommentImage FitImage" src="@("/Uploads/" + comment.Image)" />
+                                    </div>
+                                }
+                                <div class="d-flex justify-content-end gap-3">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <p class="ContentSubtitle neuteredLink ColorTransition" data-bs-toggle="modal" data-bs-target="#ReplyModal@(comment.Id)" style="cursor: pointer;">
+                                            Reply<div class="modal fade" id="ReplyModal@(comment.Id)" tabindex="-1" aria-labelledby="ReplyModal@(comment.Id)Label" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Reply to @comment.Author.Username</h5>
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                            @await Component.InvokeAsync("CommentArea", new
+                                                                {
+                                                                    id = comment.AuthorId,
+                                                                    author = int.Parse(User.Identity.Name),
+                                                                    areaType = "reply"
+
+                                                                })
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </p>
+                                    }
+                                    <p class="ContentSubtitle" style="text-align:right">@comment.Timestamp</p>
+
+                                </div>
+                            </div>
+
+
+                        }
+                    </div>
+
+
+                </div>
+
+                <div class="tab-pane fade p-3" id="favourites" role="tabpanel">
+                    <h5>Anime</h5>
+                    <div class="ProfileFavourites">
+                        @foreach (Favourite fav in Model.Favourites.FindAll(elem => elem.Type == Favourite.FavouriteType.Anime))
+                        {
+                            <div>
+                                <a asp-action="Anime" asp-controller="Anime" asp-route-Id="@fav.FavouriteId" title="@fav.Name">
+                                    <img src="@fav.Image" class="MediumImage" />
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    @*                     <h5>Characters</h5>
+                    <h5>Industry</h5>
+                    *@
+                </div>
+                <div class="tab-pane fade p-3" id="stats" role="tabpanel">
+                    <div class="stats-container">
+                        <div>
+                            @await Component.InvokeAsync("Chart", new { Stats = Model.ProfileStats.Score, caption = "Ratings" })
+                            <p class="text-center">Average Score: @(Math.Round(Model.MediaList.Average(item => item.Rating) ?? 0.00, 2, MidpointRounding.AwayFromZero))</p>
+                        </div>
+                        <div>
+                            @await Component.InvokeAsync("Chart", new { Stats = Model.ProfileStats.Status, caption = "Entries" })
+                            <p class="text-center">Total Entries: @Model.MediaList.Count</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade p-3" id="friends" role="tabpanel">
+                    <div class="d-flex gap-3 flex-wrap">
+                        @foreach (User friend in Model.Friends)
+                        {
+                            <a asp-action="Users" asp-controller="Account" asp-route-id="@friend.Id" class="neuteredLink ColorTransition">
+                                <div class="d-flex gap-3 align-items-center ">
+                                    <div>
+                                        <img src=" @("/Uploads/" + friend.ProfilePicture)" class="MediumRoundedImage" />
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 1.2rem">
+                                            @friend.Username
+                                        </p>
+                                        <p class="card-subtitle ContentSubtitle">Friend since: @friend.Timestamp?.ToShortDateString()</p>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="reviews" role="tabpanel">
+                    <p class="text-center">Not implemented yet</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="EditProfileModal" tabindex="-1" aria-labelledby="EditProfileLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="EditProfileLabel">Edit Profile</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="form" enctype="multipart/form-data" method="post" asp-action="EditProfile" asp-controller="Account" asp-route-id="@Model.User.Id">
+
+                <div class="modal-body">
+                    <label asp-for="@Model.User.Username" class="form-label">Username:</label>
+                    <input asp-for="@Model.User.Username" type="text" class="form-control" value="@Model.User.Username" />
+
+                    <label asp-for="@Model.User.Email" class="form-label">Email address:</label>
+                    <input asp-for="@Model.User.Email" type="text" class="form-control" value="@Model.User.Email" />
+
+                    <label asp-for="@Model.User.ProfilePicture" class="form-label">Profile Picture:</label>
+                    <input asp-for="@Model.User.ProfilePicture" type="file" formenctype="multipart/form-data" class="form-control" name="propic" value="@Model.User.ProfilePicture" />
+
+                    <label asp-for="@Model.User.ProfileBanner" class="form-label">Profile Banner:</label>
+                    <input asp-for="@Model.User.ProfileBanner" type="file" formenctype="multipart/form-data" class="form-control" name="bannerpic" value="@Model.User.ProfileBanner" />
+
+
+                    @*                     <label asp-for="@Model.User.Gender" class="form-label">Gender:</label>
+                    <input asp-for="@Model.User.Gender" type="text" class="form-control" value="@Model.User.Gender" />
+
+                    <label asp-for="@Model.User.Pronouns" class="form-label">Pronouns:</label>
+                    <input asp-for="@Model.User.Pronouns" type="text" class="form-control" value="@Model.User.Pronouns" />
+
+                    <label asp-for="@Model.User.Location" class="form-label">Location:</label>
+                    <input asp-for="@Model.User.Location" type="text" class="form-control" value="@Model.User.Location" />
+
+                    <label asp-for="@Model.User.BirthDate" class="form-label">Date of Birth:</label>
+                    <input asp-for="@Model.User.BirthDate" type="date" class="form-control" value="@(Model.User.BirthDate?.ToString("yyyy-MM-dd") ?? "")" />
+                    *@
+                    <label asp-for="@Model.User.AboutMe" class="form-label">About me:</label>
+                    @Html.TextArea("User.AboutMe", Model.User.AboutMe, new { @class = "form-control" })
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        const AboutMeBox = document.querySelector(".ProfileAboutMe")
+        const xpander = document.getElementById("expander")
+        if (AboutMeBox.scrollHeight <= 500) {
+            xpander.style.display = "none"
+            console.log(AboutMeBox.scrollHeight)
+            AboutMeBox.style.height = `${AboutMeBox.scrollHeight}px`
+        } else {
+            AboutMeBox.style.height = `500px`
+
+        }
+
+        function SetAboutOverflow() {
+
+            if (AboutMeBox.clientHeight > 500) {
+                AboutMeBox.style.height = "500px"
+
+            } else {
+
+                AboutMeBox.style.height = `${AboutMeBox.scrollHeight}px`;
+            }
+
+        }
+        const upload = document.getElementById("fileInput")
+
+        function readURL(upload) {
+            if (upload.files && upload.files[0]) {
+                var reader = new FileReader();
+
+                reader.addEventListener("load", function (e) {
+                    const preview = document.getElementById("imagePreview")
+                    if (preview.getAttribute("src") === "") {
+                        preview.classList.toggle("ToggleDisplay")
+                    }
+
+                    preview.setAttribute("src", e.target.result)
+                })
+                const previewText = document.getElementById("textPreviewer").innerText = upload.files[0].name
+                reader.readAsDataURL(upload.files[0])
+            }
+        }
+        if (upload) {
+            upload.addEventListener("change", function () {
+                readURL(this);
+            });
+
+        }
+
+        const comments = document.querySelectorAll(".CommentHeader")
+        comments.forEach(c => {
+
+            c.addEventListener("mouseenter", function () {
+                const editor = document.querySelector(`.e${this.id}`)
+
+                editor.classList.toggle("ToggleDisplay")
+            })
+            c.addEventListener("mouseleave", function () {
+                const editor = document.querySelector(`.e${this.id}`)
+                editor.classList.toggle("ToggleDisplay")
+            })
+        })
+
+
+    </script>
+}

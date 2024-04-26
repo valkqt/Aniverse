@@ -1,0 +1,44 @@
+﻿@model User
+<div>
+    <div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="@("/Uploads/" + Model.ProfilePicture)" class="SmallRoundedImage" />
+
+        </a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" asp-action="Users" asp-controller="Account" asp-route-id="@Model.Id">Profile</a></li>
+            <li><a class="dropdown-item" asp-action="List" asp-controller="MediaList" asp-route-id="@Model.Id" asp-route-sort="default">My List</a></li>
+            <li>
+                <a class="dropdown-item">
+                    <button type="button" class="btn btn-link neuteredLink" data-bs-toggle="modal" data-bs-target="#LogoutModal">
+                        Logout
+                    </button>
+
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="modal fade" id="LogoutModal" tabindex="-1" aria-labelledby="LogoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form asp-action="Logout" asp-controller="Auth" method="post" id="LogoutForm">
+
+                    <div class="modal-header text-center">
+                        <h2 class="">Logout</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body ">
+                        Are you sure you want to log out?
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center gap-5">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
