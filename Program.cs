@@ -6,7 +6,14 @@ namespace Capstone
     {
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
             app.Use(async (context, next) =>
             {
@@ -77,6 +84,9 @@ namespace Capstone
             app.UseAuthorization();
 
             app.UseRouting();
+
+            app.UseAuthorization();
+
 
             app.MapControllerRoute(
                 name: "Anime",

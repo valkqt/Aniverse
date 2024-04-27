@@ -236,34 +236,7 @@
                                         @relation.RelationType?.Replace('_', ' ')
                                     </div>
                                 </a>
-                                @*                                 <div id="r@(relation.Id)" class="AnimeCardHover ToggleDisplay">
-                            <div class="d-flex justify-content-between">
-                            <p class="text-capitalize fw-bold">@relation.Season @(relation.SeasonYear != 0 ? relation.SeasonYear : "?")</p>
-                            <p>
-                            @if (relation.AverageScore != null)
-
-                            {
-
-                            @(relation.AverageScore / 10) <i class="bi bi-star-fill" style="color: @relation.ColorAvg"></i>
-                            }
-                            </p>
-                            </div>
-                            <p class="mb-3 small text-capitalize">@relation.Status</p>
-
-                            <p class="fw-bold" style="color: @relation.ColorAvg">@relation.Studios.FirstOrDefault()?.Name</p>
-                            <div class="d-flex gap-1 mb-3">
-                            <p class="fw-bold">@relation.Format</p>
-                            <p>- @(relation.Episodes != 0 ? relation.Episodes : "?")  Episodes</p>
-                            </div>
-
-                            <div class="smallCard">
-                            @foreach (string genre in relation.Genres.Take(3))
-                            {
-                            <span style="background-color: @relation.ColorAvg" class="SearchGenres">@genre</span>
-                            }
-                            </div>
-                            </div>
-                            *@
+                                
                             </div>
 
 
@@ -283,7 +256,7 @@
                                 <div class="CharacterOverview">
                                     <div class="smallCard">
 
-                                        <img src="@character.Image" alt="@character.Name" class="SmallImage" />
+                                        <img src="@character.Image" alt="@character.Name" class="SmallImage FitImage" />
                                         <div class="cardTextLeft Text">
                                             <p>@character.Name</p>
                                             <p class="text-capitalize card-subtitle ContentSubtitle">@character.Role</p>

@@ -152,7 +152,6 @@
                 document.onclick = function (e) {
                     if (!e.target.classList.contains("NotificationDisappear") && !e.target.classList.contains("bi-bell-fill") && !dropdown.classList.contains("ToggleDisplayUniversal")) {
                         //element clicked wasn't the div; hide the div
-                        console.log(!dropdown.classList.contains("ToggleDisplayUniversal"))
                         dropdown.classList.add("ToggleDisplayUniversal");
                     }
                 };
@@ -182,7 +181,6 @@
                     } else {
                         notifText.classList.remove("ToggleDisplayUniversal")
                     }
-                    console.log(data)
 
                 }
 
