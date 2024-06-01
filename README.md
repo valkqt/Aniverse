@@ -15,5 +15,5 @@ At the moment it's possible to search titles by name, genre, release year and se
 Aniverse was mainly created in Visual studio using .NET Core MVC framework. SQL and Entity framework were used for database management, and data on titles is pulled from the Anilist API which has a GraphQL model.
 
 # Roadmap
-[x] Website online
-[] Restructuring into React+TS and .NET REST API
+- [x] Website online
+- [] Restructuring into React+TS and .NET REST API
