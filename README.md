@@ -16,4 +16,4 @@ Aniverse was mainly created in Visual studio using .NET Core MVC framework. SQL 
 
 # Roadmap
 - [x] Website online
-- [] Restructuring into React+TS and .NET REST API
+- [ ] Restructuring into React+TS and .NET REST API
